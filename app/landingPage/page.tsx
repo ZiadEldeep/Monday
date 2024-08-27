@@ -63,7 +63,6 @@ const LandingPage: FC = () => {
       {/* Call to Action Section */}
       <section className="py-16 bg-gradient-to-r from-purple-600 to-blue-500 text-white text-center">
         <h2 className="text-4xl font-bold mb-6">Ready to Get Started?</h2>
-        {/* <Link href={signup}>signUp</Link> */}
         <button className="bg-white text-purple-600 font-semibold py-2 px-6 rounded-lg shadow-md">
           Sign Up Now
         </button>
