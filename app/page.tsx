@@ -3,7 +3,6 @@ import ServicesCarousel from '@/components/shared/ServicesCarousel';
 import SideBySideParagraphAndTags from '@/components/shared/SideBySideParagraphAndTags';
 import Link from 'next/link';
 
-
 const Home = () => {
   return (
     <div className="w-full">
@@ -13,6 +12,7 @@ const Home = () => {
         {/* <ServicesCarousel /> */}
       </section>
     </div>
+
   );
 };
 
