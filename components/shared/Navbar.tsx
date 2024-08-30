@@ -4,6 +4,7 @@ import React from 'react';
 import { Layout, Menu, Button } from 'antd';
 import { HomeOutlined, SolutionOutlined, AppstoreAddOutlined, InfoCircleOutlined, CaretDownOutlined, ProjectOutlined, CustomerServiceOutlined, CodeOutlined, LaptopOutlined } from '@ant-design/icons';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const { Header } = Layout;
 
@@ -11,10 +12,12 @@ const Navbar: React.FC = () => {
   return (
     <Header className="flex items-center justify-between bg-white">
       <div className="logo">
-        <img
+        <Image
           alt="Logo"
-          src="https://dapulse-res.cloudinary.com/image/upload/f_auto,q_auto/remote_mondaycom_static/img/monday-logo-x2.png"
-          className="h-8" // Height of the logo
+          src="/images/monday-logo.png"
+          className="h-8"
+           width={100}
+           height={32}
         />
       </div>
       <Menu mode="horizontal" theme="light" className="flex-grow">
