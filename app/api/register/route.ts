@@ -1,14 +1,13 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
-import { User } from "@/lib/models/user.models";
+import  User  from "@/lib/models/user.models";
 import { connectDB } from "@/mongoose";
 
 
 export async function POST(request: Request) {
+  const { name, email, password } = await request.json();
   try {
-    const { name, email, password } = await request.json();
     await connectDB();
-
     // Check if the user already exists
     const existingUser = await User.findOne({ email });
 
