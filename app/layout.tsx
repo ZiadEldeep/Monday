@@ -3,8 +3,8 @@ import Navbar from '@/components/shared/Navbar';
 import './globals.css';
 import Sidebar from '@/components/shared/Sidebar';
 import Footer from '@/components/shared/Footer';
+import InfintyProvider from '@/providers/InfintyProvider';
 
-import './globals.css';
 
 export const metadata = {
   title: 'My Monday Clone',
@@ -13,15 +13,17 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
+    <InfintyProvider>
     <html lang="en">
       <body>
-          <Navbar />
+          {/* <Navbar /> */}
           <div className="flex">
             <main className="p-4">{children}</main>
           </div>
-          <Footer />
+          {/* <Footer /> */}
       </body>
 
     </html>
+    </InfintyProvider>
   );
 }

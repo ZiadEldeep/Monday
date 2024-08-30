@@ -1,16 +1,23 @@
-// pages/api/projects.ts
+// app/api/projects/route.ts
+import { NextRequest, NextResponse } from 'next/server';
 import { Project } from '@/lib/models/project.models';
 import { connectDB } from '@/mongoose';
-import type { NextApiRequest, NextApiResponse } from 'next';
 
+// Connect to the database when the API route is invoked
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  await connectDB();
-
-  try {
+export async function GET(request: NextRequest) {
+    try {
+      await connectDB();
+    // Fetch all projects and populate the user field
     const projects = await Project.find().populate('user');
-    res.status(200).json({ projects });
-  } catch (error:any) {
-    res.status(500).json({ message: 'Error fetching projects', error: error.message });
+    
+    // Return the projects in the response
+    return NextResponse.json({ projects }, { status: 200 });
+  } catch (error: any) {
+    // Handle any errors that occur during fetching
+    return NextResponse.json(
+      { message: 'Error fetching projects', error: error.message },
+      { status: 500 }
+    );
   }
 }

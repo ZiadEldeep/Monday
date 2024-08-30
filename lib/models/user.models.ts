@@ -1,4 +1,4 @@
-import { Schema, model, Document, Types } from 'mongoose';
+import mongoose,{ Schema, Document, Types } from 'mongoose';
 import { IProject } from './project.models';
  // Import the Project interface
 
@@ -39,4 +39,5 @@ const userSchema = new Schema<IUser>({
 });
 
 // Create and export the User model
-export const User = model<IUser>('User', userSchema);
+const User = mongoose.models?.User || mongoose.model('User', userSchema);
+export default User;
