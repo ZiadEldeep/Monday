@@ -1,14 +1,114 @@
 'use client';
 
-import React from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { Layout, Menu, Button } from 'antd';
-import { HomeOutlined, SolutionOutlined, AppstoreAddOutlined, InfoCircleOutlined, CaretDownOutlined, ProjectOutlined, CustomerServiceOutlined, CodeOutlined, LaptopOutlined } from '@ant-design/icons';
+import {
+  HomeOutlined,
+  SolutionOutlined,
+  AppstoreAddOutlined,
+  InfoCircleOutlined,
+  CaretDownOutlined,
+  ProjectOutlined,
+  CustomerServiceOutlined,
+  CodeOutlined,
+  LaptopOutlined,
+} from '@ant-design/icons';
 import Link from 'next/link';
 import Image from 'next/image';
 
 const { Header } = Layout;
 
+interface Product {
+  key: string;
+  href: string;
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+}
+
+const products: Product[] = [
+  {
+    key: 'work-management',
+    href: '/work-management',
+    icon: <ProjectOutlined />,
+    title: 'monday work management',
+    description: 'For projects & tasks',
+  },
+  {
+    key: 'crm',
+    href: '/crm',
+    icon: <CustomerServiceOutlined />,
+    title: 'monday CRM',
+    description: 'For customer-facing teams',
+  },
+  {
+    key: 'dev',
+    href: '/dev',
+    icon: <CodeOutlined />,
+    title: 'monday dev',
+    description: 'For product & dev teams',
+  },
+  {
+    key: 'service',
+    href: '/w/service',
+    icon: <LaptopOutlined />,
+    title: 'monday service',
+    description: 'For IT & support',
+  },
+];
+
+const ProductSubMenu: React.FC = React.memo(() => {
+  const renderMenuItems = useCallback(
+    () =>
+      products.map((product) => (
+        <Menu.Item key={product.key} className="hover:bg-gray-100 transition duration-200">
+          <Link href={product.href} className="p-2 flex items-center">
+            {product.icon}
+            {product.title}
+          </Link>
+          <p className="text-xs text-gray-500">{product.description}</p>
+        </Menu.Item>
+      )),
+    []
+  );
+
+  return (
+    <Menu.SubMenu
+      key="products"
+      title={
+        <span>
+          <AppstoreAddOutlined />
+          Products <CaretDownOutlined />
+        </span>
+      }
+      className="group"
+    >
+      <div className="grid grid-cols-2 gap-4 p-4 bg-white shadow-lg rounded-md">
+        {renderMenuItems()}
+      </div>
+    </Menu.SubMenu>
+  );
+});
+
 const Navbar: React.FC = () => {
+  const menuItems = useMemo(
+    () => (
+      <>
+        <Menu.Item key="home" icon={<HomeOutlined />}>
+          <Link href="/">Home</Link>
+        </Menu.Item>
+        <ProductSubMenu />
+        <Menu.Item key="solutions" icon={<SolutionOutlined />}>
+          <Link href="/solutions">Solutions</Link>
+        </Menu.Item>
+        <Menu.Item key="resources" icon={<InfoCircleOutlined />}>
+          <Link href="/resources">Resources</Link>
+        </Menu.Item>
+      </>
+    ),
+    []
+  );
+
   return (
     <Header className="flex items-center justify-between bg-white">
       <div className="logo">
@@ -16,61 +116,12 @@ const Navbar: React.FC = () => {
           alt="Logo"
           src="/images/monday-logo.png"
           className="h-8"
-           width={100}
-           height={32}
+          width={100}
+          height={32}
         />
       </div>
       <Menu mode="horizontal" theme="light" className="flex-grow">
-        <Menu.Item key="home" icon={<HomeOutlined />}>
-          <Link href="/">Home</Link>
-        </Menu.Item>
-        <Menu.SubMenu 
-          key="products" 
-          title={
-            <span>
-              <AppstoreAddOutlined />
-              Products <CaretDownOutlined />
-            </span>
-          } 
-          className="group"
-        >
-          <div className="grid grid-cols-2 gap-4 p-4 bg-white shadow-lg rounded-md">
-            <Menu.Item key="work-management" className="hover:bg-gray-100 transition duration-200">
-              <Link href="/work-management" className=" p-2 flex items-center">
-                <ProjectOutlined className="mr-2" />
-                monday work management
-              </Link>
-              <p className="text-xs text-gray-500">For projects & tasks</p>
-            </Menu.Item>
-            <Menu.Item key="crm" className="hover:bg-gray-100 transition duration-200">
-              <Link href="/crm" className=" p-2 flex items-center">
-                <CustomerServiceOutlined className="mr-2" />
-                monday CRM
-              </Link>
-              <p className="text-xs text-gray-500">For customer-facing teams</p>
-            </Menu.Item>
-            <Menu.Item key="dev" className="hover:bg-gray-100 transition duration-200">
-              <Link href="/dev" className=" p-2 flex items-center">
-                <CodeOutlined className="mr-2" />
-                monday dev
-              </Link>
-              <p className="text-xs text-gray-500">For product & dev teams</p>
-            </Menu.Item>
-            <Menu.Item key="service" className="hover:bg-gray-100 transition duration-200">
-              <Link href="/w/service" className=" p-2 flex items-center">
-                <LaptopOutlined className="mr-2" />
-                monday service
-              </Link>
-              <p className="text-xs text-gray-500">For IT & support</p>
-            </Menu.Item>
-          </div>
-        </Menu.SubMenu>
-        <Menu.Item key="solutions" icon={<SolutionOutlined />}>
-          <Link href="/solutions">Solutions</Link>
-        </Menu.Item>
-        <Menu.Item key="resources" icon={<InfoCircleOutlined />}>
-          <Link href="/resources">Resources</Link>
-        </Menu.Item>
+        {menuItems}
       </Menu>
       <div>
         <Button type="link" href="/pricing">Pricing</Button>
