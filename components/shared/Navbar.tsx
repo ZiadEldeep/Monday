@@ -1,5 +1,5 @@
 'use client';
-
+import { CaretRightOutlined } from "@ant-design/icons";
 import React from 'react';
 import { Layout, Menu, Button } from 'antd';
 import {
@@ -63,7 +63,7 @@ const ProductSubMenu: React.FC = () => (
     <div className="grid grid-cols-2 gap-4 p-4 bg-white shadow-lg rounded-md">
       {products.map((product) => (
         <Menu.Item key={product.key} className="hover:bg-gray-100 transition duration-200">
-          <Link href={product.href} className="p-2 flex items-center">
+          <Link href={product.href} className="p-2 flex hover:text-custom-500 items-center">
             {product.icon}
             {product.title}
           </Link>
@@ -76,7 +76,7 @@ const ProductSubMenu: React.FC = () => (
 
 const Navbar: React.FC = () => {
   return (
-    <Header className="flex items-center justify-between bg-white">
+    <Header className="flex items-center justify-between leading-10 bg-white">
       <div className="logo">
         <Image
           alt="Logo"
@@ -88,25 +88,32 @@ const Navbar: React.FC = () => {
       </div>
       <Menu mode="horizontal" theme="light" className="flex-grow">
         <Menu.Item key="home" icon={<HomeOutlined />}>
-          <Link href="/">Home</Link>
+          <Link href="/" className={"hover:text-custom-500"}>Home</Link>
         </Menu.Item>
         <ProductSubMenu />
         <Menu.Item key="solutions" icon={<SolutionOutlined />}>
-          <Link href="/solutions">Solutions</Link>
+          <Link href="/solutions" className={"hover:text-custom-500"}>Solutions</Link>
         </Menu.Item>
         <Menu.Item key="resources" icon={<InfoCircleOutlined />}>
-          <Link href="/resources">Resources</Link>
+          <Link href="/resources" className={"hover:text-custom-500"}>Resources</Link>
         </Menu.Item>
       </Menu>
-      <div>
-        <Button type="link" href="/pricing">Pricing</Button>
-        <Button type="link" href="/login">Log in</Button>
-        <Button type="primary" href="/contact-us" className="ml-2">
+      <div className="">
+
+      <div className="flex gap-3 items-center h-auto">
+        <Link  href="/pricing" className={"hover:text-custom-500"}>Pricing</Link>
+        <Link  href="/login" className={"hover:text-custom-500"}>Log in</Link>
+        <Link  href="/contact-us" className="flex h-auto  bg-custom-500/90  hover:bg-custom-500 hover:text-white text-white px-4  rounded-xl  hover:scale-105">
           Contact Sales
-        </Button>
-        <Button type="primary" href="/register" className="ml-2">
-          Get Started
-        </Button>
+        </Link>
+        <Link
+                  href={"/register"}
+                    className=" flex pr-3 hover:gap-2 hover:pr-1   ladda-button signup-button hover:text-white bg-custom-500/90 hover:bg-custom-500 text-white px-4 rounded-xl transition duration-200 ease-in-out transform hover:scale-105"
+                    >
+                    Get Started
+                    <CaretRightOutlined />
+                  </Link>
+      </div>
       </div>
     </Header>
   );
