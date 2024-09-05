@@ -13,10 +13,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (<>
 
           <Navbar />
-          <div className="flex">
-            <main className="flex-grow p-4">{children}</main>
+          <div className="flex  w-full ">
+            <main className="flex-grow p-4  w-full ">{children}</main>
           </div>
-          {/* <Footer /> */}
+          <Footer />
   </>
   );
 }
