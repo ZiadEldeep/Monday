@@ -437,3 +437,50 @@ export const AssetsPr = [
     src: "HR.avif",
   },
 ];
+
+// data/tasks.ts
+import { Task } from "@/types/types";
+
+export const tasks: Task[] = [
+  {
+    _id: "1",
+    title: "Task 1",
+    description: "Description for Task 1",
+    dueDate: new Date(),
+    status: "TODO",
+    userId:"hj"
+  },
+  {
+    
+    _id: "2",
+    title: "Task 2",
+    description: "Description for Task 2",
+    status: "IN_PROGRESS",
+    dueDate: new Date(),
+    userId:"hj"
+  },
+  {
+    _id: "3",
+    title: "Task 3",
+    description: "Description for Task 3",
+    status: "completed",
+    dueDate: new Date(),
+    userId:"hj"
+  },
+  {
+    _id: "4",
+    title: "Task 4",
+    description: "Description for Task 4",
+    status: "TODO",
+    dueDate: new Date(),
+    userId:"hj"
+  },
+  {
+    _id: "5",
+    title: "Task 5",
+    description: "Description for Task 5",
+    status: "IN_PROGRESS",
+    dueDate: new Date(),
+    userId:"hj"
+  },
+];

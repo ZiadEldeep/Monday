@@ -1,0 +1,17 @@
+/* components/KanbanBoard.module.css */
+.kanbanContainer {
+    display: flex;
+    gap: 16px;
+  }
+  
+  .column {
+    flex: 1;
+    background-color: #f0f2f5;
+    padding: 16px;
+    border-radius: 8px;
+  }
+  
+  .taskCard {
+    margin-top: 16px;
+    cursor: pointer;
+  }

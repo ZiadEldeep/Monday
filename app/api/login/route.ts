@@ -1,9 +1,9 @@
+// /app/api/login/route.ts
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import  User  from "@/lib/models/user.models";
+import User from "@/lib/models/user.models";
 import { connectDB } from "@/mongoose";
-
 
 const secret = process.env.JWT_SECRET || "rrrrrrpklmlmnugykbhnvgh";
 
@@ -41,14 +41,18 @@ export async function POST(request: Request) {
       { status: 200 }
     );
 
-    // Set the token as a cookie
+    // Set the token and userId as cookies
     response.cookies.set("authToken", token, {
       httpOnly: true,
       maxAge: 60 * 60 * 24 * 30, // 1 month
     });
-
+    response.cookies.set("userId", user._id.toString(), {
+      httpOnly: true,
+      maxAge: 60 * 60 * 24 * 30, // 1 month
+    });
+    
     return response;
-  } catch (error:any) {
+  } catch (error: any) {
     return NextResponse.json(
       { message: "Internal Server Error", error: error.message },
       { status: 500 }

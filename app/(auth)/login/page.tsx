@@ -1,51 +1,146 @@
-'use client';
+"use client";
 
-import { Form, Input, Button, Typography } from 'antd';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { Input, Button, Typography } from "antd";
+import { useRouter } from "next/navigation";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { motion } from "framer-motion";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Link from "next/link"; // Import Link
+
+const loginSchema = z.object({
+  email: z.string().email("Invalid email address").min(1, "Email is required"),
+  password: z.string().min(6, "Password must be at least 6 characters long"),
+});
+
+type LoginFormInputs = z.infer<typeof loginSchema>;
 
 const { Title } = Typography;
 
 export default function LoginPage() {
-  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
-  const handleLogin = async (values: { email: string; password: string }) => {
-    setError(null);
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormInputs>({
+    resolver: zodResolver(loginSchema),
+  });
 
-    const res = await fetch('/api/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(values),
-    });
+  const handleLogin = async (values: LoginFormInputs) => {
+    const loadingToastId = toast.loading("Logging in...");
 
-    if (res.ok) {
-      router.push('/dashboard');
-    } else {
-      const data = await res.json();
-      setError(data.message);
+    try {
+      const res = await fetch("/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
+
+      if (res.status===200) {
+        toast.update(loadingToastId, {
+          render: "Login successful!",
+          type: "success",
+          isLoading: false,
+          autoClose: 3000,
+        });
+        router.push("/dashboard");
+      } else {
+        const data = await res.json();
+        throw new Error(data.message);
+      }
+    } catch (error: any) {
+      toast.update(loadingToastId, {
+        render: error.message || "Failed to log in. Please try again.",
+        type: "error",
+        isLoading: false,
+        autoClose: 3000,
+      });
     }
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10">
-      <Title level={2} className="mb-4">Login</Title>
-      {error && <p className="text-red-500">{error}</p>}
-      <Form onFinish={handleLogin} layout="vertical">
-        <Form.Item label="Email" name="email" rules={[{ required: true, message: 'Please enter your email' }]}>
-          <Input type="email" />
-        </Form.Item>
-        <Form.Item label="Password" name="password" rules={[{ required: true, message: 'Please enter your password' }]}>
-          <Input.Password />
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit" block>
+    <motion.div
+      className="max-w-md mx-auto mt-10 min-w-[500px] p-6 rounded-lg shadow-lg"
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+    >
+      <Title
+        level={1}
+        className="mb-4 text-center text-gold-500"
+        style={{ color: "#d4aa48" }}
+      >
+        Login
+      </Title>
+
+      <form onSubmit={handleSubmit(handleLogin)} className="space-y-6">
+        <div>
+          <label className="block mb-2 text-sm font-bold text-gold-500">
+            Email
+          </label>
+          <Controller
+            name="email"
+            control={control}
+            render={({ field }) => (
+              <Input
+                {...field}
+                type="email"
+                className={`border ${
+                  errors.email ? "border-red-500" : "border-gold-500"
+                } w-full p-2`}
+              />
+            )}
+          />
+          {errors.email && (
+            <p className="text-red-500 mt-1">{errors.email.message}</p>
+          )}
+        </div>
+
+        <div>
+          <label className="block mb-2 text-sm font-bold text-gold-500">
+            Password
+          </label>
+          <Controller
+            name="password"
+            control={control}
+            render={({ field }) => (
+              <Input.Password
+                {...field}
+                className={`border ${
+                  errors.password ? "border-red-500" : "border-gold-500"
+                } w-full p-2`}
+              />
+            )}
+          />
+          {errors.password && (
+            <p className="text-red-500 mt-1">{errors.password.message}</p>
+          )}
+        </div>
+
+        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+          <Button
+            type="primary"
+            htmlType="submit"
+            block
+            className="bg-gold-500 border-none"
+          >
             Login
           </Button>
-        </Form.Item>
-      </Form>
-    </div>
+        </motion.div>
+
+        {/* Link to Register */}
+        <div className="text-center mt-4">
+          <Link href="/register">
+              {"Don't have an account? Register here."}
+          </Link>
+        </div>
+      </form>
+    </motion.div>
   );
 }

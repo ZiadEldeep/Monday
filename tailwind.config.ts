@@ -25,6 +25,7 @@ const config = {
         background: "var(--background)",
         foreground: "hsl(var(--foreground))",
         "custom-500":"#6161FF",
+        "gold-500":"#6161FF",
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",

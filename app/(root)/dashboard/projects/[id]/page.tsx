@@ -1,6 +1,5 @@
 "use client"
 import KanbanBoard from '@/components/shared/KanbanBoard';
-import TaskTable from '@/components/shared/Table';
 import { tasks } from '@/constant/data';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
@@ -14,10 +13,9 @@ import axios from 'axios';
 const BoardData= {
   tasks: tasks,
   _id: "2",
-  name: "IDIA",
+  name: "ffff",
 }
-export default function Dashboard() {
-
+export default function Project() {
   // const {
   //   data: projects,
   //   error: error,
@@ -31,8 +29,10 @@ export default function Dashboard() {
 
   return (
     <div>
+      <h1 className="text-2xl font-bold mb-4">Your Projects</h1>
+      <ul>
         <KanbanBoard board={BoardData}/>
-        <TaskTable/>
+      </ul>
     </div>
   );
 }

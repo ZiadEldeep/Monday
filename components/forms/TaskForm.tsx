@@ -1,36 +1,61 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { TaskSchema, taskSchema } from '@/lib/validation/tasks';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-interface TaskFormInputs {
-  title: string;
-  description: string;
-  dueDate: string;
-}
+const TaskForm = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<TaskSchema>({
+    resolver: zodResolver(taskSchema),
+  });
 
-export default function TaskForm() {
-  const { register, handleSubmit, reset } = useForm<TaskFormInputs>();
-  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  const onSubmit = async (data: TaskFormInputs) => {
+  const onSubmit = async (data: TaskSchema) => {
     try {
+      setLoading(true);
+      toast.info('Creating task...', { autoClose: 1000 });
+
       const response = await axios.post('/api/tasks', data);
+
       if (response.data.success) {
         reset();
-        // You can add more logic to update UI or navigate
+        toast.success('Task created successfully!', { autoClose: 3000 });
+        // Add more logic to update UI or navigate if needed
+      } else {
+        toast.error('Failed to create task.');
       }
     } catch (err) {
-      setError('Failed to create task');
+      toast.error('Failed to create task.');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <input {...register('title', { required: true })} placeholder="Task Title" />
-      <textarea {...register('description', { required: true })} placeholder="Task Description" />
-      <input type="date" {...register('dueDate')} placeholder="Due Date" />
-      {error && <p>{error}</p>}
-      <button type="submit">Create Task</button>
-    </form>
+    <>
+      <ToastContainer />
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <input {...register('title')} placeholder="Task Title" />
+        {errors.title && <p>{errors.title.message}</p>}
+
+        <textarea {...register('description')} placeholder="Task Description" />
+        {errors.description && <p>{errors.description.message}</p>}
+
+        <input type="date" {...register('dueDate')} />
+        <button type="submit" disabled={loading}>
+          {loading ? 'Loading...' : 'Create Task'}
+        </button>
+      </form>
+    </>
   );
-}
+};
+
+export default TaskForm;

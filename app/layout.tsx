@@ -18,7 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
           {/* <Navbar /> */}
           <div className="flex  w-full ">
-            <main className="p-4  w-full ">{children}</main>
+            <main className="  w-full ">{children}</main>
           </div>
           {/* <Footer /> */}
       </body>
