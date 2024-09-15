@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.4.0",
-    "@asseinfo/react-kanban": "^2.2.0",
     "@hello-pangea/dnd": "^17.0.0",
     "@hookform/resolvers": "^3.9.0",
     "@radix-ui/react-dropdown-menu": "^2.1.1",
